@@ -4,16 +4,27 @@ import com.dima.beans.Client;
 import com.dima.beans.Event;
 import com.dima.beans.EventType;
 import com.dima.loggers.EventLogger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 public class App {
 
+    @Autowired
     private Client client;
+
+    @Value("#{ T(com.dima.beans.Event).isDay(8,17) ? "
+            + "cacheFileEventLogger : consoleEventLogger }")
     private EventLogger defaultLogger;
+
+    @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
+
+
 
     public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;

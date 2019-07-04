@@ -2,12 +2,14 @@ package com.dima.loggers;
 
 import com.dima.beans.Event;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 
 public class CombinedEventLogger implements EventLogger{
 
-    private final Collection<EventLogger> loggers;
+    @Resource(name = "combinedLoggers")
+    private Collection<EventLogger> loggers;
 
     public CombinedEventLogger(Collection<EventLogger> loggers) {
         this.loggers = loggers;

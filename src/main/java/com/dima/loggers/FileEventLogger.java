@@ -5,16 +5,22 @@ import java.io.IOException;
 
 import com.dima.beans.Event;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.annotation.PostConstruct;
 
 public class FileEventLogger implements EventLogger {
 
     private File file;
+
+    @Value("${events.file:target/events_log.txt}")
     private String fileName;
 
     public FileEventLogger(String fileName) {
         this.fileName = fileName;
     }
 
+    @PostConstruct
     public void init() {
         file = new File(fileName);
         if (file.exists() && !file.canWrite()) {
