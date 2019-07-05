@@ -1,6 +1,7 @@
-package com.dima.loggers;
+package com.dima.spring;
 
 import com.dima.beans.EventType;
+import com.dima.loggers.EventLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -18,29 +19,23 @@ public class LoggerConfig {
     public static PropertySourcesPlaceholderConfigurer propertyConfigIn() {
         return new PropertySourcesPlaceholderConfigurer();
     }
+
     @Resource(name = "consoleEventLogger")
     private EventLogger consoleEventLogger;
-
 
     @Resource(name = "fileEventLogger")
     private EventLogger fileEventLogger;
 
-
     @Resource(name = "combinedEventLogger")
     private EventLogger combinedEventLogger;
 
-    @Resource(name = "cacheFileEventLogger")
-    private EventLogger cacheEventLogger;
-
-
     @Bean
     public Collection<EventLogger> combinedLoggers() {
-        Collection<EventLogger> loggers = new ArrayList<EventLogger>(2);
+        Collection<EventLogger> loggers = new ArrayList<>(2);
         loggers.add(consoleEventLogger);
         loggers.add(fileEventLogger);
         return loggers;
     }
-
 
     @Bean
     public Map<EventType, EventLogger> loggerMap() {
@@ -48,10 +43,5 @@ public class LoggerConfig {
         map.put(EventType.INFO, consoleEventLogger);
         map.put(EventType.ERROR, combinedEventLogger);
         return map;
-    }
-
-    @Bean
-    public EventLogger defaultLogger() {
-        return cacheEventLogger;
     }
 }

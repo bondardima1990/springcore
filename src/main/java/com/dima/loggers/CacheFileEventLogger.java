@@ -2,18 +2,24 @@ package com.dima.loggers;
 
 import com.dima.beans.Event;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CacheFileEventLogger extends FileEventLogger {
 
     @Value("${cache.size:5}")
     private int cacheSize;
+
     private List<Event> cache;
 
+    public CacheFileEventLogger() {
+
+    }
 
     public CacheFileEventLogger(String fileName, int cacheSize) {
         super(fileName);
@@ -44,5 +50,11 @@ public class CacheFileEventLogger extends FileEventLogger {
 
     private void writeEventsFromCache() {
         cache.stream().forEach(super::logEvent);
+    }
+
+    @Value("#{fileEventLogger.name + ' with cache'}")
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }
